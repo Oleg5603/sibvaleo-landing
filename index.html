@@ -1,0 +1,767 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sibvaleo — протокол здоровья для консультанта</title>
+<style>
+  :root {
+    --paper: #EFEBDA;
+    --card: #E3DDC5;
+    --card-line: #CFC6A4;
+    --ink: #1B2317;
+    --ink-soft: #4B5245;
+    --moss: #46604A;
+    --moss-soft: #6C8570;
+    --resin: #B85A1B;
+    --resin-ink: #7A3A10;
+
+    --stage-1: #8B7355;
+    --stage-2: #5C7A6B;
+    --stage-3: #46604A;
+    --stage-4: #7A5C6E;
+
+    --focus: #B85A1B;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper: #141A11;
+      --card: #1D2419;
+      --card-line: #333D2C;
+      --ink: #E9E4D2;
+      --ink-soft: #B7B49E;
+      --moss: #8FAE8C;
+      --moss-soft: #6E8A6C;
+      --resin: #E08A3E;
+      --resin-ink: #F3B67B;
+
+      --stage-1: #A78F6E;
+      --stage-2: #7FA396;
+      --stage-3: #7FA37F;
+      --stage-4: #A184A0;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #141A11;
+    --card: #1D2419;
+    --card-line: #333D2C;
+    --ink: #E9E4D2;
+    --ink-soft: #B7B49E;
+    --moss: #8FAE8C;
+    --moss-soft: #6E8A6C;
+    --resin: #E08A3E;
+    --resin-ink: #F3B67B;
+    --stage-1: #A78F6E;
+    --stage-2: #7FA396;
+    --stage-3: #7FA37F;
+    --stage-4: #A184A0;
+  }
+  :root[data-theme="light"] {
+    --paper: #EFEBDA;
+    --card: #E3DDC5;
+    --card-line: #CFC6A4;
+    --ink: #1B2317;
+    --ink-soft: #4B5245;
+    --moss: #46604A;
+    --moss-soft: #6C8570;
+    --resin: #B85A1B;
+    --resin-ink: #7A3A10;
+    --stage-1: #8B7355;
+    --stage-2: #5C7A6B;
+    --stage-3: #46604A;
+    --stage-4: #7A5C6E;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, .display {
+    font-family: Rockwell, "Roboto Slab", Georgia, serif;
+    font-weight: 700;
+    text-wrap: balance;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+
+  .mono {
+    font-family: ui-monospace, "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .eyebrow {
+    font-family: ui-monospace, "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.72rem;
+    color: var(--moss-soft);
+  }
+
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--focus);
+    outline-offset: 3px;
+  }
+
+  .wrap {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* ── Header ───────────────────────────────────────────── */
+  header {
+    padding: 22px 0;
+    border-bottom: 1px solid var(--card-line);
+  }
+  header .wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .wordmark {
+    font-family: Rockwell, "Roboto Slab", Georgia, serif;
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: -0.01em;
+  }
+  .wordmark span { color: var(--resin); }
+  nav {
+    display: flex;
+    gap: 28px;
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+  }
+  nav a { text-decoration: none; }
+  nav a:hover { color: var(--ink); }
+  .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 3px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .btn-primary {
+    background: var(--resin);
+    color: #fff;
+  }
+  .btn-ghost {
+    border: 1px solid var(--card-line);
+    color: var(--ink);
+  }
+  @media (max-width: 720px) {
+    nav { display: none; }
+  }
+
+  /* ── Hero ─────────────────────────────────────────────── */
+  .hero {
+    padding: 72px 0 56px;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 4.4vw, 3.15rem);
+    line-height: 1.08;
+    margin-top: 14px;
+  }
+  .hero-sub {
+    max-width: 62ch;
+    font-size: 1.08rem;
+    color: var(--ink-soft);
+    margin-top: 20px;
+  }
+  .hero-cta {
+    display: flex;
+    gap: 14px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+  }
+
+  /* ── Protocol strip (hero visual) ─────────────────────── */
+  .protocol {
+    background: var(--card);
+    border: 1px solid var(--card-line);
+    border-radius: 6px;
+    padding: 22px 24px 20px;
+    overflow-x: auto;
+  }
+  .protocol-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .protocol-client {
+    font-weight: 700;
+    font-size: 0.98rem;
+  }
+  .protocol-tags {
+    color: var(--ink-soft);
+    font-size: 0.86rem;
+  }
+  .protocol-body {
+    min-width: 560px;
+  }
+  .ruler {
+    position: relative;
+    height: 18px;
+    margin-left: 168px;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--card-line);
+  }
+  .ruler span {
+    position: absolute;
+    transform: translateX(-50%);
+    font-size: 0.68rem;
+    color: var(--ink-soft);
+    bottom: 3px;
+  }
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 5px 0;
+  }
+  .row-label {
+    width: 156px;
+    flex: 0 0 156px;
+    font-size: 0.78rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .row-track {
+    position: relative;
+    flex: 1;
+    height: 20px;
+    background: color-mix(in srgb, var(--card-line) 45%, transparent);
+    border-radius: 3px;
+  }
+  .row-bar {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    border-radius: 3px;
+    font-size: 0.62rem;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    padding: 0 6px;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid var(--card-line);
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 0.76rem;
+    color: var(--ink-soft);
+  }
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    flex: none;
+  }
+
+  /* ── Section shell ────────────────────────────────────── */
+  section {
+    padding: 64px 0;
+    border-top: 1px solid var(--card-line);
+  }
+  section h2 {
+    font-size: clamp(1.5rem, 2.6vw, 2rem);
+    margin-top: 10px;
+    max-width: 40ch;
+  }
+  .section-head { margin-bottom: 40px; }
+  .section-lede {
+    max-width: 60ch;
+    color: var(--ink-soft);
+    margin-top: 14px;
+    font-size: 1.02rem;
+  }
+
+  /* ── How it works ─────────────────────────────────────── */
+  .flow {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+  }
+  .flow::before {
+    content: "";
+    position: absolute;
+    top: 9px;
+    left: calc(12.5% - 1px);
+    right: calc(12.5% - 1px);
+    height: 1px;
+    background: var(--card-line);
+  }
+  .flow-step {
+    padding-right: 20px;
+    position: relative;
+  }
+  .flow-node {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--resin);
+    border: 3px solid var(--paper);
+    box-shadow: 0 0 0 1px var(--card-line);
+    margin-bottom: 18px;
+  }
+  .flow-step h3 {
+    font-size: 1.02rem;
+    margin-bottom: 8px;
+  }
+  .flow-step p {
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+  @media (max-width: 860px) {
+    .flow { grid-template-columns: 1fr 1fr; gap: 32px 20px; }
+    .flow::before { display: none; }
+  }
+
+  /* ── Feature grid ─────────────────────────────────────── */
+  .features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--card-line);
+    border: 1px solid var(--card-line);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .feature {
+    background: var(--paper);
+    padding: 26px 24px;
+  }
+  .feature-tag {
+    display: inline-block;
+    font-size: 0.66rem;
+    padding: 3px 8px;
+    border-radius: 2px;
+    color: #fff;
+    letter-spacing: 0.08em;
+    margin-bottom: 14px;
+  }
+  .feature h3 {
+    font-size: 1.02rem;
+    margin-bottom: 8px;
+  }
+  .feature p {
+    font-size: 0.89rem;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+  @media (max-width: 860px) {
+    .features { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 560px) {
+    .features { grid-template-columns: 1fr; }
+  }
+
+  /* ── Before / after ───────────────────────────────────── */
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .compare-col {
+    border: 1px solid var(--card-line);
+    border-radius: 6px;
+    padding: 26px 26px 22px;
+  }
+  .compare-col.now { opacity: 0.82; }
+  .compare-col.with { border-color: var(--resin); }
+  .compare-col h3 {
+    font-size: 0.95rem;
+    margin-bottom: 16px;
+  }
+  .compare-col.with h3 { color: var(--resin-ink); }
+  .compare-col ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .compare-col li {
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    padding: 7px 0;
+    border-top: 1px solid var(--card-line);
+  }
+  .compare-col li:first-child { border-top: none; }
+  @media (max-width: 720px) {
+    .compare { grid-template-columns: 1fr; }
+  }
+
+  /* ── Status ───────────────────────────────────────────── */
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: ui-monospace, "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--resin-ink);
+    border: 1px solid var(--resin);
+    border-radius: 999px;
+    padding: 5px 14px 5px 10px;
+    margin-bottom: 18px;
+  }
+  .status-badge::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--resin);
+  }
+  .roadmap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    margin-top: 32px;
+  }
+  .roadmap h3 {
+    font-size: 0.88rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-soft);
+    margin-bottom: 14px;
+    font-family: ui-monospace, "Cascadia Mono", "SFMono-Regular", Consolas, monospace;
+    font-weight: 600;
+  }
+  .roadmap ul { margin: 0; padding: 0; list-style: none; }
+  .roadmap li {
+    font-size: 0.92rem;
+    padding: 8px 0 8px 22px;
+    position: relative;
+    border-top: 1px solid var(--card-line);
+  }
+  .roadmap li:first-child { border-top: none; }
+  .roadmap.done li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--moss);
+    font-weight: 700;
+  }
+  .roadmap.next li::before {
+    content: "—";
+    position: absolute;
+    left: 0;
+    color: var(--ink-soft);
+  }
+  @media (max-width: 720px) {
+    .roadmap { grid-template-columns: 1fr; }
+  }
+
+  /* ── Footer ───────────────────────────────────────────── */
+  footer {
+    padding: 40px 0 48px;
+    border-top: 1px solid var(--card-line);
+  }
+  .footer-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .disclaimer {
+    max-width: 52ch;
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+    margin-top: 10px;
+  }
+  .footer-contact {
+    text-align: right;
+    font-size: 0.9rem;
+  }
+  .footer-contact a {
+    color: var(--resin-ink);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .footer-contact a:hover { text-decoration: underline; }
+  .copyright {
+    margin-top: 28px;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .row-bar, .flow-node { transition: transform 0.2s ease; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="wordmark">sib<span>valeo</span></div>
+    <nav>
+      <a href="#how">Как это работает</a>
+      <a href="#features">Возможности</a>
+      <a href="#status">Статус проекта</a>
+    </nav>
+    <a class="btn btn-primary" href="mailto:a9223364546@gmail.com">Написать разработчику</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero" style="border-top: none;">
+    <div class="wrap hero-grid">
+      <div>
+        <p class="eyebrow">Приложение для консультанта · Siberian Wellness · ранний прототип</p>
+        <h1>Программа здоровья — не список на бумажке, а протокол по дням</h1>
+        <p class="hero-sub">Sibvaleo собирает для клиента персональную схему приёма за пару минут: по симптомам и диагнозам, с этапами очищения и восстановления, дозой по возрасту — и отдаёт готовым PDF, а не десятком стикеров на холодильнике.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#how">Как это работает</a>
+          <a class="btn btn-ghost" href="#status">Статус проекта</a>
+        </div>
+      </div>
+
+      <div class="protocol">
+        <div class="protocol-head">
+          <div>
+            <div class="protocol-client">Мария, 34</div>
+            <div class="protocol-tags">частые простуды · слабость · боли в суставах</div>
+          </div>
+          <div class="protocol-tags mono">программа · 60 дней</div>
+        </div>
+        <div class="protocol-body">
+          <div class="ruler">
+            <span style="left:0%">1</span>
+            <span style="left:15.25%">10</span>
+            <span style="left:32.2%">20</span>
+            <span style="left:49.15%">30</span>
+            <span style="left:66.1%">40</span>
+            <span style="left:83.05%">50</span>
+            <span style="left:98.3%">60</span>
+          </div>
+
+          <div class="row">
+            <div class="row-label">Истоки чистоты</div>
+            <div class="row-track">
+              <div class="row-bar" style="left:0%; width:23.3%; background:var(--stage-1);">1–14</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="row-label">ЭПАМ 4 (печёночный)</div>
+            <div class="row-track">
+              <div class="row-bar" style="left:5%; width:50%; background:var(--stage-1);">4–33</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="row-label">НовоМин</div>
+            <div class="row-track">
+              <div class="row-bar" style="left:23.3%; width:50%; background:var(--stage-2);">15–44</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="row-label">Северная Омега-3</div>
+            <div class="row-track">
+              <div class="row-bar" style="left:48.3%; width:51.7%; background:var(--stage-3);">30–60</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="row-label">Витамин D3</div>
+            <div class="row-track">
+              <div class="row-bar" style="left:73.3%; width:26.7%; background:var(--stage-3);">45–60</div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="row-label">Эльбифид</div>
+            <div class="row-track">
+              <div class="row-bar" style="left:78.3%; width:21.7%; background:var(--stage-4);">48–60</div>
+            </div>
+          </div>
+
+          <div class="legend">
+            <div class="legend-item"><span class="legend-dot" style="background:var(--stage-1);"></span>Очищение</div>
+            <div class="legend-item"><span class="legend-dot" style="background:var(--stage-2);"></span>Защита</div>
+            <div class="legend-item"><span class="legend-dot" style="background:var(--stage-3);"></span>Питание</div>
+            <div class="legend-item"><span class="legend-dot" style="background:var(--stage-4);"></span>Восстановление</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="how">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Как это работает</p>
+        <h2>От карточки клиента до PDF на руках — четыре шага</h2>
+      </div>
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-node"></div>
+          <h3>Карточка клиента</h3>
+          <p>Имя, возраст, пол, симптомы и диагнозы, результаты анализов — всё в одном месте вместо блокнота.</p>
+        </div>
+        <div class="flow-step">
+          <div class="flow-node"></div>
+          <h3>Подбор по симптомам</h3>
+          <p>Движок сопоставляет симптомы и диагнозы клиента с показаниями препаратов из каталога Siberian Wellness.</p>
+        </div>
+        <div class="flow-step">
+          <div class="flow-node"></div>
+          <h3>Программа по этапам</h3>
+          <p>Очищение → Защита → Питание → Восстановление — с датами начала, длительностью курса и дозой по возрасту.</p>
+        </div>
+        <div class="flow-step">
+          <div class="flow-node"></div>
+          <h3>PDF клиенту</h3>
+          <p>Готовая программа выгружается в PDF: список препаратов и шкала приёма на 60 дней.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Возможности</p>
+        <h2>Всё, что нужно для приёма, а не для галочки</h2>
+      </div>
+      <div class="features">
+        <div class="feature">
+          <span class="feature-tag" style="background:var(--moss);">ДАННЫЕ</span>
+          <h3>База клиентов</h3>
+          <p>Карточка на каждого: возраст, пол, симптомы, диагнозы, история прежних программ.</p>
+        </div>
+        <div class="feature">
+          <span class="feature-tag" style="background:var(--stage-1);">КАТАЛОГ</span>
+          <h3>Каталог Siberian Wellness</h3>
+          <p>Состав, действие, показания и противопоказания каждого препарата — под рукой на приёме.</p>
+        </div>
+        <div class="feature">
+          <span class="feature-tag" style="background:var(--stage-2);">ДВИЖОК</span>
+          <h3>Умный подбор</h3>
+          <p>Симптомы и диагнозы клиента автоматически сверяются с показаниями препаратов каталога.</p>
+        </div>
+        <div class="feature">
+          <span class="feature-tag" style="background:var(--stage-4);">ДОЗЫ</span>
+          <h3>Доза по возрасту</h3>
+          <p>Отдельная дозировка для детей 6–12, 12–18 лет, взрослых и клиентов старше 65 — без пересчёта вручную.</p>
+        </div>
+        <div class="feature">
+          <span class="feature-tag" style="background:var(--stage-3);">ШКАЛА</span>
+          <h3>График на 60 дней</h3>
+          <p>Визуальная шкала приёма по этапам — сразу видно, что с чем сочетается и когда вводить следующий препарат.</p>
+        </div>
+        <div class="feature">
+          <span class="feature-tag" style="background:var(--resin);">PDF</span>
+          <h3>Экспорт в один шаг</h3>
+          <p>Готовая программа — печатный документ для клиента, без ручного набора текста после консультации.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head">
+        <p class="eyebrow">Для консультанта</p>
+        <h2>Десятки клиентов — и одна тетрадь на всех, если не Sibvaleo</h2>
+      </div>
+      <div class="compare">
+        <div class="compare-col now">
+          <h3>Как обычно</h3>
+          <ul>
+            <li>Схема приёма — в блокноте или голове консультанта</li>
+            <li>Дозу для ребёнка и для пожилого пересчитывают вручную</li>
+            <li>Клиент уходит со списком на листочке, который теряется</li>
+            <li>Проверить состав и противопоказания — искать в каталоге отдельно</li>
+          </ul>
+        </div>
+        <div class="compare-col with">
+          <h3>Со Sibvaleo</h3>
+          <ul>
+            <li>Карточка клиента и программа хранятся в приложении</li>
+            <li>Доза по возрасту подставляется автоматически</li>
+            <li>Клиент получает PDF со списком и шкалой на 60 дней</li>
+            <li>Состав и противопоказания — в каталоге на том же экране</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="status">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="status-badge">Ранний прототип</span>
+        <h2>Проект в открытой разработке — честно про то, что уже есть</h2>
+        <p class="section-lede">Sibvaleo пока не опубликовано в Google Play или App Store и работает локально — на устройстве консультанта, без облачной синхронизации.</p>
+      </div>
+      <div class="roadmap">
+        <div>
+          <h3>Готово</h3>
+          <ul class="roadmap done">
+            <li>Карточки клиентов и история симптомов</li>
+            <li>Каталог препаратов Siberian Wellness</li>
+            <li>Подбор программы по симптомам и диагнозам</li>
+            <li>Шкала приёма на 60 дней по этапам</li>
+            <li>Экспорт программы в PDF</li>
+          </ul>
+        </div>
+        <div>
+          <h3>В работе</h3>
+          <ul class="roadmap next">
+            <li>Публикация в Google Play и App Store</li>
+            <li>Синхронизация клиентов между устройствами</li>
+            <li>Сборка под iOS / Windows / Web по запросу</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-row">
+      <div>
+        <div class="wordmark">sib<span>valeo</span></div>
+        <p class="disclaimer">Sibvaleo — независимый инструмент для консультантов Siberian Wellness, разработан частным образом. Не является официальным приложением компании Siberian Wellness (Сибирское здоровье) и не аффилирован с ней.</p>
+      </div>
+      <div class="footer-contact">
+        <div><a href="mailto:a9223364546@gmail.com">Написать разработчику</a></div>
+      </div>
+    </div>
+    <p class="copyright">© 2026 Sibvaleo. Ранний прототип, не для медицинского применения без консультации специалиста.</p>
+  </div>
+</footer>
+</body>
+</html>
