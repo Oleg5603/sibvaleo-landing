@@ -730,7 +730,7 @@
           <h3>Демо-версия · бесплатно</h3>
           <ul>
             <li>Полный функционал каталога и подбора программы</li>
-            <li>Ограничение: до 3 карточек клиентов</li>
+            <li>Ограничение: работает 7 дней с момента установки</li>
             <li>Windows-сборка, установка не требуется</li>
           </ul>
           <div style="margin-top:20px;">
@@ -746,11 +746,19 @@
           </ul>
           <div class="mono" style="margin-top:20px; font-size:0.92rem; color:var(--ink-soft);">
             Оплата переводом по СБП на номер <strong style="color:var(--ink);">+7 922 336-45-46</strong> (сумма 1300 ₽, любой банк).<br>
-            После перевода напишите разработчику — пришлём рабочую версию в ответ.
+            Укажите email ниже — после проверки оплаты ссылка на скачивание рабочей версии придёт на него.
           </div>
-          <div style="margin-top:20px;">
-            <a class="btn btn-primary" href="mailto:a9223364546@gmail.com?subject=Оплата%20Sibvaleo&body=Здравствуйте!%20Перевёл(а)%201300%20₽%20по%20СБП%20на%20номер%20+7%20922%20336-45-46%20за%20рабочую%20версию%20Sibvaleo.%20Прошу%20прислать%20установочный%20файл.">Я оплатил(а) — получить версию</a>
-          </div>
+          <form id="buy-form" style="margin-top:20px; display:flex; gap:10px; flex-wrap:wrap;">
+            <input
+              type="email"
+              id="buyer-email"
+              required
+              placeholder="ваш@email.ru"
+              style="flex:1; min-width:200px; padding:10px 14px; border-radius:3px; border:1px solid var(--card-line); background:var(--paper); color:var(--ink); font-size:0.9rem;"
+            >
+            <button type="submit" class="btn btn-primary" style="border:none; cursor:pointer; font:inherit;">Я оплатил(а) — получить версию</button>
+          </form>
+          <p id="buy-note" style="margin-top:10px; font-size:0.82rem; color:var(--ink-soft);"></p>
         </div>
       </div>
     </div>
@@ -801,5 +809,21 @@
     <p class="copyright">© 2026 Sibvaleo. Ранний прототип, не для медицинского применения без консультации специалиста.</p>
   </div>
 </footer>
+
+<script>
+  document.getElementById('buy-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var email = document.getElementById('buyer-email').value.trim();
+    var subject = encodeURIComponent('Оплата Sibvaleo — ' + email);
+    var body = encodeURIComponent(
+      'Здравствуйте!\n\n' +
+      'Перевёл(а) 1300 ₽ по СБП на номер +7 922 336-45-46 за рабочую версию Sibvaleo.\n' +
+      'Пришлите, пожалуйста, ссылку на скачивание на email: ' + email
+    );
+    window.location.href = 'mailto:a9223364546@gmail.com?subject=' + subject + '&body=' + body;
+    document.getElementById('buy-note').textContent =
+      'Открылся почтовый клиент с письмом на ' + email + ' — отправьте его, и мы вышлем ссылку после проверки оплаты.';
+  });
+</script>
 </body>
 </html>
