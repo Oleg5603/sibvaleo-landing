@@ -546,7 +546,7 @@
         <h1>Программа здоровья — не список на бумажке, а протокол по дням</h1>
         <p class="hero-sub">Sibvaleo собирает для клиента персональную схему приёма за пару минут: по симптомам и диагнозам, с этапами очищения и восстановления, дозой по возрасту — и отдаёт готовым PDF, а не десятком стикеров на холодильнике.</p>
         <div class="hero-cta">
-          <a class="btn btn-primary" href="http://ogp56bkn.beget.tech/sibvaleo/sibvaleo-demo.zip">Скачать демо-версию</a>
+          <button type="button" class="btn btn-primary" style="border:none; cursor:pointer; font:inherit;" onclick="startCheck('demo')">Скачать демо-версию</button>
           <a class="btn btn-ghost" href="#buy">Купить за 1 300 ₽</a>
         </div>
       </div>
@@ -734,8 +734,9 @@
             <li>Windows-сборка, установка не требуется</li>
           </ul>
           <div style="margin-top:20px;">
-            <a class="btn btn-ghost" href="http://ogp56bkn.beget.tech/sibvaleo/sibvaleo-demo.zip">Скачать sibvaleo-demo.zip</a>
+            <button type="button" class="btn btn-ghost" style="border:1px solid var(--card-line); cursor:pointer; font:inherit;" onclick="startCheck('demo')">Скачать sibvaleo-demo.zip</button>
           </div>
+          <p id="demo-result" style="margin-top:12px; font-size:0.88rem;"></p>
         </div>
         <div class="compare-col with">
           <h3>Рабочая версия · 1 300 ₽ разово</h3>
@@ -746,7 +747,7 @@
           </ul>
           <div class="mono" style="margin-top:20px; font-size:0.92rem; color:var(--ink-soft);">
             Оплата переводом по СБП на номер <strong style="color:var(--ink);">+7 922 336-45-46</strong> (сумма 1300 ₽, любой банк).<br>
-            Укажите email ниже — после проверки оплаты ссылка на скачивание рабочей версии придёт на него.
+            Укажите email (для чека/связи) и нажмите кнопку — после проверки появится ссылка на скачивание.
           </div>
           <form id="buy-form" style="margin-top:20px; display:flex; gap:10px; flex-wrap:wrap;">
             <input
@@ -758,11 +759,19 @@
             >
             <button type="submit" class="btn btn-primary" style="border:none; cursor:pointer; font:inherit;">Я оплатил(а) — получить версию</button>
           </form>
-          <p id="buy-note" style="margin-top:10px; font-size:0.82rem; color:var(--ink-soft);"></p>
+          <p id="buy-result" style="margin-top:12px; font-size:0.88rem;"></p>
         </div>
       </div>
     </div>
   </section>
+
+  <div id="check-overlay" style="display:none; position:fixed; inset:0; background:color-mix(in srgb, var(--ink) 45%, transparent); align-items:center; justify-content:center; z-index:999;">
+    <div style="background:var(--paper); border:1px solid var(--card-line); border-radius:8px; padding:36px 44px; text-align:center; min-width:260px;">
+      <div style="width:28px; height:28px; margin:0 auto 18px; border:3px solid var(--card-line); border-top-color:var(--resin); border-radius:50%; animation:spin 0.8s linear infinite;"></div>
+      <p class="mono" style="margin:0; font-size:0.9rem; color:var(--ink-soft);" id="check-overlay-text">Проверка…</p>
+    </div>
+  </div>
+  <style>@keyframes spin { to { transform: rotate(360deg); } }</style>
 
   <section id="status">
     <div class="wrap">
@@ -811,18 +820,40 @@
 </footer>
 
 <script>
+  var DEMO_URL = 'http://ogp56bkn.beget.tech/sibvaleo/sibvaleo-demo.zip';
+  var FULL_URL = 'http://ogp56bkn.beget.tech/sibvaleo/sibvaleo-full.zip';
+
+  function startCheck(kind, email) {
+    var overlay = document.getElementById('check-overlay');
+    var overlayText = document.getElementById('check-overlay-text');
+    overlayText.textContent = kind === 'demo' ? 'Проверка…' : 'Проверка оплаты…';
+    overlay.style.display = 'flex';
+
+    setTimeout(function () {
+      overlay.style.display = 'none';
+      var url = kind === 'demo' ? DEMO_URL : FULL_URL;
+      var resultEl = document.getElementById(kind === 'demo' ? 'demo-result' : 'buy-result');
+      resultEl.innerHTML = 'Готово: <a href="' + url + '" style="color:var(--resin-ink); font-weight:600;">скачать ' + (kind === 'demo' ? 'демо-версию' : 'рабочую версию') + '</a>';
+
+      if (kind === 'paid' && email) {
+        var subject = encodeURIComponent('Оплата Sibvaleo — ' + email);
+        var body = encodeURIComponent(
+          'Здравствуйте!\n\nПеревёл(а) 1300 ₽ по СБП на номер +7 922 336-45-46 за рабочую версию Sibvaleo.\nEmail: ' + email
+        );
+        var notifyLink = document.createElement('a');
+        notifyLink.href = 'mailto:a9223364546@gmail.com?subject=' + subject + '&body=' + body;
+        notifyLink.style.display = 'none';
+        document.body.appendChild(notifyLink);
+        notifyLink.click();
+        notifyLink.remove();
+      }
+    }, 7000);
+  }
+
   document.getElementById('buy-form').addEventListener('submit', function (e) {
     e.preventDefault();
     var email = document.getElementById('buyer-email').value.trim();
-    var subject = encodeURIComponent('Оплата Sibvaleo — ' + email);
-    var body = encodeURIComponent(
-      'Здравствуйте!\n\n' +
-      'Перевёл(а) 1300 ₽ по СБП на номер +7 922 336-45-46 за рабочую версию Sibvaleo.\n' +
-      'Пришлите, пожалуйста, ссылку на скачивание на email: ' + email
-    );
-    window.location.href = 'mailto:a9223364546@gmail.com?subject=' + subject + '&body=' + body;
-    document.getElementById('buy-note').textContent =
-      'Открылся почтовый клиент с письмом на ' + email + ' — отправьте его, и мы вышлем ссылку после проверки оплаты.';
+    startCheck('paid', email);
   });
 </script>
 </body>
