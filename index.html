@@ -823,11 +823,17 @@
   var DEMO_URL = 'http://ogp56bkn.beget.tech/sibvaleo/sibvaleo-demo.zip';
   var FULL_URL = 'http://ogp56bkn.beget.tech/sibvaleo/sibvaleo-full.zip';
 
+  var COUNTER_NS = 'sibvaleo-oleg5603';
+  function bumpCounter(name) {
+    fetch('https://api.counterapi.dev/v1/' + COUNTER_NS + '/' + name + '/up').catch(function () {});
+  }
+
   function startCheck(kind, email) {
     var overlay = document.getElementById('check-overlay');
     var overlayText = document.getElementById('check-overlay-text');
     overlayText.textContent = kind === 'demo' ? 'Проверка…' : 'Проверка оплаты…';
     overlay.style.display = 'flex';
+    bumpCounter(kind === 'demo' ? 'demo-downloads' : 'paid-clicks');
 
     setTimeout(function () {
       overlay.style.display = 'none';
