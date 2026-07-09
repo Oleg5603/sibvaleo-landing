@@ -6,71 +6,71 @@
 <title>Sibvaleo — протокол здоровья для консультанта</title>
 <style>
   :root {
-    --paper: #EFEBDA;
-    --card: #E3DDC5;
-    --card-line: #CFC6A4;
-    --ink: #1B2317;
-    --ink-soft: #4B5245;
-    --moss: #46604A;
-    --moss-soft: #6C8570;
-    --resin: #B85A1B;
-    --resin-ink: #7A3A10;
+    --paper: #F4F7FB;
+    --card: #E8EFF7;
+    --card-line: #C9D6E8;
+    --ink: #06112E;
+    --ink-soft: #435273;
+    --moss: #0B276F;
+    --moss-soft: #4A6BA8;
+    --resin: #00AEEF;
+    --resin-ink: #0088B8;
 
-    --stage-1: #8B7355;
-    --stage-2: #5C7A6B;
-    --stage-3: #46604A;
-    --stage-4: #7A5C6E;
+    --stage-1: #0B276F;
+    --stage-2: #0088B8;
+    --stage-3: #00AEEF;
+    --stage-4: #2BC78F;
 
-    --focus: #B85A1B;
+    --focus: #00AEEF;
   }
 
   @media (prefers-color-scheme: dark) {
     :root {
-      --paper: #141A11;
-      --card: #1D2419;
-      --card-line: #333D2C;
-      --ink: #E9E4D2;
-      --ink-soft: #B7B49E;
-      --moss: #8FAE8C;
-      --moss-soft: #6E8A6C;
-      --resin: #E08A3E;
-      --resin-ink: #F3B67B;
+      --paper: #06112E;
+      --card: #0C1C41;
+      --card-line: #1D3162;
+      --ink: #E9EFF9;
+      --ink-soft: #A9B8D6;
+      --moss: #6FA1F2;
+      --moss-soft: #4A6BA8;
+      --resin: #00AEEF;
+      --resin-ink: #5FD3FF;
 
-      --stage-1: #A78F6E;
-      --stage-2: #7FA396;
-      --stage-3: #7FA37F;
-      --stage-4: #A184A0;
+      --stage-1: #6FA1F2;
+      --stage-2: #4FC1E9;
+      --stage-3: #00AEEF;
+      --stage-4: #2BC78F;
     }
   }
   :root[data-theme="dark"] {
-    --paper: #141A11;
-    --card: #1D2419;
-    --card-line: #333D2C;
-    --ink: #E9E4D2;
-    --ink-soft: #B7B49E;
-    --moss: #8FAE8C;
-    --moss-soft: #6E8A6C;
-    --resin: #E08A3E;
-    --resin-ink: #F3B67B;
-    --stage-1: #A78F6E;
-    --stage-2: #7FA396;
-    --stage-3: #7FA37F;
-    --stage-4: #A184A0;
+    --paper: #06112E;
+    --card: #0C1C41;
+    --card-line: #1D3162;
+    --ink: #E9EFF9;
+    --ink-soft: #A9B8D6;
+    --moss: #6FA1F2;
+    --moss-soft: #4A6BA8;
+    --resin: #00AEEF;
+    --resin-ink: #5FD3FF;
+    --stage-1: #6FA1F2;
+    --stage-2: #4FC1E9;
+    --stage-3: #00AEEF;
+    --stage-4: #2BC78F;
   }
   :root[data-theme="light"] {
-    --paper: #EFEBDA;
-    --card: #E3DDC5;
-    --card-line: #CFC6A4;
-    --ink: #1B2317;
-    --ink-soft: #4B5245;
-    --moss: #46604A;
-    --moss-soft: #6C8570;
-    --resin: #B85A1B;
-    --resin-ink: #7A3A10;
-    --stage-1: #8B7355;
-    --stage-2: #5C7A6B;
-    --stage-3: #46604A;
-    --stage-4: #7A5C6E;
+    --paper: #F4F7FB;
+    --card: #E8EFF7;
+    --card-line: #C9D6E8;
+    --ink: #06112E;
+    --ink-soft: #435273;
+    --moss: #0B276F;
+    --moss-soft: #4A6BA8;
+    --resin: #00AEEF;
+    --resin-ink: #0088B8;
+    --stage-1: #0B276F;
+    --stage-2: #0088B8;
+    --stage-3: #00AEEF;
+    --stage-4: #2BC78F;
   }
 
   * { box-sizing: border-box; }
@@ -730,7 +730,7 @@
           <h3>Демо-версия · бесплатно</h3>
           <ul>
             <li>Полный функционал каталога и подбора программы</li>
-            <li>Ограничение: работает 7 дней с момента установки</li>
+            <li>Ограничение: работает 4 дня с момента установки</li>
             <li>Windows-сборка, установка не требуется</li>
           </ul>
           <div style="margin-top:20px;">
@@ -739,15 +739,15 @@
           <p id="demo-result" style="margin-top:12px; font-size:0.88rem;"></p>
         </div>
         <div class="compare-col with">
-          <h3>Рабочая версия · 1 300 ₽ разово</h3>
+          <h3>Активация · 1 300 ₽ разово</h3>
           <ul>
-            <li>Без ограничения по числу клиентов</li>
+            <li>Тот же дистрибутив, что и демо — без ограничения по сроку и числу клиентов</li>
             <li>Экспорт программы в PDF</li>
-            <li>Обновления в рамках текущего прототипа — бесплатно</li>
+            <li>2 кода активации: для ПК и для телефона</li>
           </ul>
           <div class="mono" style="margin-top:20px; font-size:0.92rem; color:var(--ink-soft);">
             Оплата переводом по СБП на номер <strong style="color:var(--ink);">+7 922 336-45-46</strong> (Тинькофф, сумма 1300 ₽, можно из любого банка).<br>
-            Укажите email (для чека/связи) и нажмите кнопку — после проверки появится ссылка на скачивание.
+            Укажите email (для чека/связи) и нажмите кнопку — после проверки здесь появятся два кода активации.
           </div>
           <form id="buy-form" style="margin-top:20px; display:flex; gap:10px; flex-wrap:wrap;">
             <input
@@ -757,7 +757,7 @@
               placeholder="ваш@email.ru"
               style="flex:1; min-width:200px; padding:10px 14px; border-radius:3px; border:1px solid var(--card-line); background:var(--paper); color:var(--ink); font-size:0.9rem;"
             >
-            <button type="submit" class="btn btn-primary" style="border:none; cursor:pointer; font:inherit;">Я оплатил(а) — получить версию</button>
+            <button type="submit" class="btn btn-primary" style="border:none; cursor:pointer; font:inherit;">Я оплатил(а) — получить коды</button>
           </form>
           <p id="buy-result" style="margin-top:12px; font-size:0.88rem;"></p>
         </div>
@@ -821,11 +821,18 @@
 
 <script>
   var DEMO_URL = 'http://ogp56bkn.beget.tech/sibvaleo/sibvaleo-demo.zip';
-  var FULL_URL = 'http://ogp56bkn.beget.tech/sibvaleo/sibvaleo-full.zip';
 
   var COUNTER_NS = 'sibvaleo-oleg5603';
   function bumpCounter(name) {
     fetch('https://api.counterapi.dev/v1/' + COUNTER_NS + '/' + name + '/up').catch(function () {});
+  }
+
+  // Mirrors lib/utils/activation.dart Activation.generateCode — keep both in sync.
+  function activationCode(clientNum, slot) {
+    var salt = 54321, k1 = 37, k2 = 7919;
+    var v = (clientNum * k1 + slot * k2 + salt) % 100000;
+    var n = String(clientNum).padStart(3, '0');
+    return 'SVL' + n + '-' + String(v).padStart(5, '0');
   }
 
   function startCheck(kind, email) {
@@ -837,14 +844,27 @@
 
     setTimeout(function () {
       overlay.style.display = 'none';
-      var url = kind === 'demo' ? DEMO_URL : FULL_URL;
-      var resultEl = document.getElementById(kind === 'demo' ? 'demo-result' : 'buy-result');
-      resultEl.innerHTML = 'Готово: <a href="' + url + '" style="color:var(--resin-ink); font-weight:600;">скачать ' + (kind === 'demo' ? 'демо-версию' : 'рабочую версию') + '</a>';
 
-      if (kind === 'paid' && email) {
+      if (kind === 'demo') {
+        var demoResultEl = document.getElementById('demo-result');
+        demoResultEl.innerHTML = 'Готово: <a href="' + DEMO_URL + '" style="color:var(--resin-ink); font-weight:600;">скачать sibvaleo-demo.zip</a>';
+        return;
+      }
+
+      var clientNum = 1 + (Date.now() % 999);
+      var pcCode = activationCode(clientNum, 1);
+      var phoneCode = activationCode(clientNum, 2);
+      var buyResultEl = document.getElementById('buy-result');
+      buyResultEl.innerHTML =
+        'Код для ПК: <strong class="mono">' + pcCode + '</strong><br>' +
+        'Код для телефона: <strong class="mono">' + phoneCode + '</strong><br>' +
+        'Введите код в приложении (тот же <a href="' + DEMO_URL + '" style="color:var(--resin-ink); font-weight:600;">sibvaleo-demo.zip</a>), если ещё не установлено.';
+
+      if (email) {
         var subject = encodeURIComponent('Оплата Sibvaleo — ' + email);
         var body = encodeURIComponent(
-          'Здравствуйте!\n\nПеревёл(а) 1300 ₽ по СБП на номер +7 922 336-45-46 за рабочую версию Sibvaleo.\nEmail: ' + email
+          'Здравствуйте!\n\nПеревёл(а) 1300 ₽ по СБП на номер +7 922 336-45-46 за активацию Sibvaleo.\n' +
+          'Email: ' + email + '\nКод ПК: ' + pcCode + '\nКод телефон: ' + phoneCode
         );
         var notifyLink = document.createElement('a');
         notifyLink.href = 'mailto:a9223364546@gmail.com?subject=' + subject + '&body=' + body;
